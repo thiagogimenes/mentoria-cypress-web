@@ -33,7 +33,6 @@ describe('Teste de login', () => {
     preencherSenha()
     clicarLogar()
     validaEmailInvalido()
-
   });
 
   it('Login email vazio', () => {
