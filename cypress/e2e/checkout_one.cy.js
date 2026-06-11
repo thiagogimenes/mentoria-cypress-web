@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker'
 describe('Cadastro de checkout-one', () => {
 
     beforeEach(() => {
-        cy.visit('https://automationpratice.com.br/checkout-one');
+        cy.visit('/checkout-one');
 
     });
 
