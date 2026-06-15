@@ -1,61 +1,72 @@
 /// <reference types="cypress" /> 
 
 import { faker } from '@faker-js/faker'
-import { 
-  acessarLogin, 
-  clicarLogar, 
-  preencherEmailUsuario, 
-  preencherSenha, 
-  validaLoginRealizado, 
-  preencherEmailInvalido, 
-  validaEmailInvalido, 
-  preencherSenhaInvalida, 
-  validaSenhaInvalida, 
+import {
+  acessarLogin,
+  clicarLogar,
+  preencherEmailUsuario,
+  preencherSenha,
+  validaLoginRealizado,
+  preencherEmailInvalido,
+  validaEmailInvalido,
+  preencherSenhaInvalida,
+  validaSenhaInvalida,
   criaConta,
   validaUrlRegistrar,
-  validaFormRegistrar} from '../support/pages/login_page'
+  validaFormRegistrar
+} from '../support/pages/login_page'
 
-describe('Teste de login', () => {
+const telas = [
+  { dispositivo: 'Desktop', largura: 1280, altura: 720 },
+  { dispositivo: 'Tablet', largura: 768, altura: 1024 },
+  { dispositivo: 'Celular (iPhone X)', largura: 405, altura: 812 }
+]
 
-  beforeEach(() => {
-    acessarLogin()
-  });
+telas.forEach((tela) => {
+  describe(`Login - ${tela.dispositivo}`, () => {
 
-  it('Login com sucesso', () => {
-    preencherEmailUsuario()
-    preencherSenha()
-    clicarLogar()
-    validaLoginRealizado()
+    beforeEach(() => {
+      cy.viewport(tela.largura, tela.altura)
+      acessarLogin()
+    });
+
+    it(`Login com sucesso - ${tela.largura, tela.altura}`, () => {
+      preencherEmailUsuario()
+      preencherSenha()
+      clicarLogar()
+      validaLoginRealizado()
+    })
+
+    it(`Login email inválido - ${tela.largura, tela.altura}`, () => {
+      preencherEmailInvalido()
+      preencherSenha()
+      clicarLogar()
+      validaEmailInvalido()
+    });
+
+    it(`Login email vazio -  ${tela.largura, tela.altura}`, () => {
+      preencherSenha()
+      clicarLogar()
+      validaEmailInvalido()
+    });
+
+    it(`Login senha inválida - ${tela.largura, tela.altura}`, () => {
+      preencherEmailUsuario()
+      preencherSenhaInvalida()
+      clicarLogar()
+    });
+
+    it(`Login senha vazia - ${tela.largura, tela.altura}`, () => {
+      preencherEmailUsuario()
+      clicarLogar()
+      validaSenhaInvalida()
+    });
+
+    it(`Botão ainda não tem conta - ${tela.largura, tela.altura}`, () => {
+      criaConta()
+      validaUrlRegistrar()
+      validaFormRegistrar()
+    });
   })
 
-  it('Login email inválido', () => {
-    preencherEmailInvalido()
-    preencherSenha()
-    clicarLogar()
-    validaEmailInvalido()
-  });
-
-  it('Login email vazio', () => {
-    preencherSenha()
-    clicarLogar()
-    validaEmailInvalido()
-  });
-
-  it('Login senha inválida', () => {
-    preencherEmailUsuario()
-    preencherSenhaInvalida()
-    clicarLogar()
-  });
-
-  it('Login senha vazia', () => {
-    preencherEmailUsuario()
-    clicarLogar()
-    validaSenhaInvalida()
-  });
-
-  it('Botão ainda não tem conta', () => {
-    criaConta()
-    validaUrlRegistrar()
-    validaFormRegistrar()
-  });
 })
