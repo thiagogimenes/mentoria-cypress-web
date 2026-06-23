@@ -18,6 +18,6 @@ jobs:
         if: always() # Certifique-se de que o relatório será salvo mesmo se os testes falharem
         uses: actions/upload-artifact@v4
         with:
-          name: mockawesome-report # Nome do artifact
-          path: mockawesome-reports # Caminho onde o relatório está salvo
+          name: mochawesome-report # Nome do artifact
+          path: mochawesome-reports # Caminho onde o relatório está salvo
           retention-days: 2 # Define que o artifact expira em 3 dias
