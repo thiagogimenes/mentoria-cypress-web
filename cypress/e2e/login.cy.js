@@ -1,63 +1,72 @@
 /// <reference types="cypress" /> 
 
 import { faker } from '@faker-js/faker'
+import {
+  acessarLogin,
+  clicarLogar,
+  preencherEmailUsuario,
+  preencherSenha,
+  validaLoginRealizado,
+  preencherEmailInvalido,
+  validaEmailInvalido,
+  preencherSenhaInvalida,
+  validaSenhaInvalida,
+  criaConta,
+  validaUrlRegistrar,
+  validaFormRegistrar
+} from '../support/pages/login_page'
 
-describe('Teste de login', () => {
-  it('Login com sucesso', () => {
-    cy.visit('https://automationpratice.com.br/login')
-    cy.get('#user').type(faker.internet.email())
-    cy.get('#password').type(faker.string.numeric(6))
-    cy.get('#btnLogin').click()
-    cy.get('#swal2-title')
-      .should('have.text', 'Login realizado')
-      .should('be.visible')
+const telas = [
+  { dispositivo: 'Desktop', largura: 1280, altura: 720 },
+  { dispositivo: 'Tablet', largura: 768, altura: 1024 },
+  { dispositivo: 'Celular (iPhone X)', largura: 405, altura: 812 }
+]
+
+telas.forEach((tela) => {
+  describe(`Login - ${tela.dispositivo}`, () => {
+
+    beforeEach(() => {
+      cy.viewport(tela.largura, tela.altura)
+      acessarLogin()
+    });
+
+    it(`Login com sucesso - ${tela.largura, tela.altura}`, () => {
+      preencherEmailUsuario()
+      preencherSenha()
+      clicarLogar()
+      validaLoginRealizado()
+    })
+
+    it(`Login email inválido - ${tela.largura, tela.altura}`, () => {
+      preencherEmailInvalido()
+      preencherSenha()
+      clicarLogar()
+      validaEmailInvalido()
+    });
+
+    it(`Login email vazio -  ${tela.largura, tela.altura}`, () => {
+      preencherSenha()
+      clicarLogar()
+      validaEmailInvalido()
+    });
+
+    it(`Login senha inválida - ${tela.largura, tela.altura}`, () => {
+      preencherEmailUsuario()
+      preencherSenhaInvalida()
+      clicarLogar()
+    });
+
+    it(`Login senha vazia - ${tela.largura, tela.altura}`, () => {
+      preencherEmailUsuario()
+      clicarLogar()
+      validaSenhaInvalida()
+    });
+
+    it(`Botão ainda não tem conta - ${tela.largura, tela.altura}`, () => {
+      criaConta()
+      validaUrlRegistrar()
+      validaFormRegistrar()
+    });
   })
 
-  it('Login email inválido', () => {
-    cy.visit('https://automationpratice.com.br/login')
-    cy.get('#user').type('cyThiago')
-    cy.get('#password').type(faker.string.numeric(6))
-    cy.get('#btnLogin').click()
-    cy.get('.invalid_input')
-      .should('have.text', 'E-mail inválido.')
-      .should('be.visible')
-  });
-
-  it('Login email vazio', () => {
-    cy.visit('https://automationpratice.com.br/login')
-    cy.get('#password').type(faker.string.numeric(6))
-    cy.get('#btnLogin').click()
-    cy.get('.invalid_input')
-      .should('have.text', 'E-mail inválido.')
-      .should('be.visible')
-  });
-
-  it('Login senha inválida', () => {
-    cy.visit('https://automationpratice.com.br/login')
-    cy.get('#user').type('cyThiago@mock.com')
-    cy.get('#password').type(faker.string.numeric(2))
-    cy.get('#btnLogin').click()
-    cy.get('.invalid_input')
-      .should('have.text', 'Senha inválida.')
-      .should('be.visible')
-  });
-
-  it('Login senha vazia', () => {
-    cy.visit('https://automationpratice.com.br/login')
-    cy.get('#user').type('cyThiago@mock.com')
-    cy.get('#btnLogin').click()
-    cy.get('.invalid_input')
-      .should('have.text', 'Senha inválida.')
-      .should('be.visible')
-  });
-
-  it('Botão ainda não tem conta', () => {
-    cy.visit('https://automationpratice.com.br/login') 
-    cy.get('#createAccount').click()
-    cy.url().should('eq', 'https://automationpratice.com.br/register')
-    cy.get('.account_form')
-      .find('h3')
-      .should('have.text','Cadastro de usuário')
-      .should('be.visible')
-  });
 })

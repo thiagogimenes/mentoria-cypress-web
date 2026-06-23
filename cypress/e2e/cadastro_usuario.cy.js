@@ -1,80 +1,92 @@
 /// <reference types="cypress" />
 
-describe('Cadastro de usuário', () => {
+import { faker } from '@faker-js/faker'
+import {
+    acessarCadastro,
+    cadastrar,
+    preencherEmail,
+    preencherNome,
+    preencherSenha,
+    preencherSenhaInvalida,
+    validaCadastroRealizado,
+    validaCampoEmail,
+    validaCampoNome,
+    validaCampoSenha,
+    validaSenhaInvalida
+} from '../support/pages/cadastro_usuario_page';
 
-    beforeEach(() => {
-        cy.visit('https://automationpratice.com.br/register')
+const telas = [
+    { dispositivo: 'Desktop', largura: 1280, altura: 720 },
+    { dispositivo: 'Tablet', largura: 768, altura: 1024 },
+    { dispositivo: 'Celular (iPhone X)', largura: 405, altura: 812 }
+]
+
+telas.forEach((tela) => {
+    describe(`Cadastro de usuário - ${tela.dispositivo}`, () => {
+
+        beforeEach(() => {
+            cy.viewport(tela.largura, tela.altura)
+            acessarCadastro()
+        })
+
+        it(`Cadastro de usuário com sucesso - ${tela.largura, tela.altura}`, () => {
+            preencherNome()
+            preencherEmail()
+            preencherSenha()
+            cadastrar()
+            validaCadastroRealizado()
+        });
+
+        it(`Cadastro de usuário sem nome - ${tela.largura, tela.altura}`, () => {
+            preencherEmail()
+            preencherSenha()
+            cadastrar()
+            validaCampoNome()
+        });
+
+        it(`Cadastro de usuário sem email - ${tela.largura, tela.altura}`, () => {
+            preencherNome()
+            preencherSenha()
+            cadastrar()
+            validaCampoEmail()
+        });
+
+        it(`Cadastro de usuário com senha de 5 digítos - ${tela.largura, tela.altura}`, () => {
+            preencherNome()
+            preencherEmail()
+            preencherSenhaInvalida()
+            cadastrar()
+            validaCampoSenha()
+        });
+
+        it(`Cadastro de usuário sem informar senha - ${tela.largura, tela.altura}`, () => {
+            preencherNome()
+            preencherEmail()
+            cadastrar()
+            validaCampoSenha()
+        });
+
+        it(`Cadastro de usuário sem email e sem senha - ${tela.largura, tela.altura}`, () => {
+            preencherNome()
+            cadastrar()
+            validaCampoEmail()
+        });
+
+        it(`Cadastro de usuário sem nome e sem email - ${tela.largura, tela.altura}`, () => {
+            preencherSenha()
+            cadastrar()
+            validaCampoNome()
+        });
+
+        it(`Cadastro de usuário sem nome e sem senha - ${tela.largura, tela.altura}`, () => {
+            preencherEmail()
+            cadastrar()
+            validaCampoNome()
+        });
+
+        it(`Cadastro sem preencher nenhum campo - ${tela.largura, tela.altura}`, () => {
+            cadastrar()
+            validaCampoNome()
+        });
     })
-
-
-    it('Cadastro de usuário sem nome', () => {
-        
-        cy.get('#email').type('thiago@mock.com')
-        cy.get('#password').type('123456')
-        cy.get('#btnRegister').click()
-        cy.get('#errorMessageFirstName').should('have.text', 'O campo nome deve ser prenchido')
-    });
-
-    it('Cadastro de usuário sem email', () => {
-        
-        cy.get('#user').type('thiago')
-        cy.get('#password').type('123456')
-        cy.get('#btnRegister').click()
-        cy.get('#errorMessageFirstName').should('have.text', 'O campo e-mail deve ser prenchido corretamente')
-    });
-
-    it('Cadastro de usuário com senha de 5 digítos', () => {
-        
-        cy.get('#user').type('thiago')
-        cy.get('#email').type('thiago@mock.com')
-        cy.get('#password').type('12345')
-        cy.get('#btnRegister').click()
-        cy.get('#errorMessageFirstName').should('have.text', 'O campo senha deve ter pelo menos 6 dígitos')
-    });
-
-    it('Cadastro de usuário sem informar senha', () => {
-        
-        cy.get('#user').type('thiago')
-        cy.get('#email').type('thiago@mock.com')
-        cy.get('#btnRegister').click()
-        cy.get('#errorMessageFirstName').should('have.text', 'O campo senha deve ter pelo menos 6 dígitos')
-    });
-
-    it('Cadastro de usuário sem email e sem senha', () => {
-        
-        cy.get('#user').type('thiago')
-        cy.get('#btnRegister').click()
-        cy.get('#errorMessageFirstName').should('have.text', 'O campo e-mail deve ser prenchido corretamente')
-    });
-
-    it('Cadastro de usuário sem nome e sem email', () => {
-        
-        cy.get('#password').type('123456')
-        cy.get('#btnRegister').click()
-        cy.get('#errorMessageFirstName').should('have.text', 'O campo nome deve ser prenchido')
-    });
-
-    it('Cadastro de usuário sem nome e sem senha', () => {
-        
-        cy.get('#email').type('thiago@mock.com')
-        cy.get('#btnRegister').click()
-        cy.get('#errorMessageFirstName').should('have.text', 'O campo nome deve ser prenchido')
-    });
-
-    it('Cadastro sem preencher nenhum campo', () => {
-        
-        cy.get('#btnRegister').click()
-        cy.get('#errorMessageFirstName').should('have.text', 'O campo nome deve ser prenchido')
-    });
-
-    it('Cadastro de usuário com sucesso', () => {
-        
-        cy.get('#user').type('thiago')
-        cy.get('#email').type('thiago@mock.com')
-        cy.get('#password').type('123456')
-        cy.get('#btnRegister').click()
-        cy.get('#swal2-title').should('have.text', 'Cadastro realizado!')
-        cy.get('#swal2-html-container').should('have.text', 'Bem-vindo thiago')
-        cy.get('.swal2-confirm').click()
-    });
-});
+})
