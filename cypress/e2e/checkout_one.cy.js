@@ -190,21 +190,21 @@ describe('Cadastro de checkout-one', () => {
         validaAdditinalNotes()
     });
 
-    it('Cadastro de pagamento com Direct Bank Transfer sem informar dados Billing Information', () => {
+    it('Pagamento com Direct Bank Transfer sem dados', () => {
         selecionaDirectBankTransfer()
         validaMensagemDirectBankTransfer()
         clicaDirectBankTransfer()
         validaMensagemPreenchaDadosPagamentos()
     });
 
-    it('Cadastro de pagamento com Mobile Banking sem informar dados Billing Information', () => {
+    it('Pagamento com Mobile Banking sem dados', () => {
         selecionaMobileBanking()
         validaMensagemDirectMobileTransfer()
         clicaDirectBankTransfer()
         validaMensagemPreenchaDadosPagamentos()
     });
 
-    it('Cadastro de pagamento com paypal sem informar dados Billing Information', () => {
+    it('Pagamento com Paypal sem dados', () => {
         selecionaPayPal()
         validaMensagemPaypal()
         clicaDirectBankTransfer()
